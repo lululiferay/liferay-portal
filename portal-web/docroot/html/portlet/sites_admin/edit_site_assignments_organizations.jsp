@@ -138,6 +138,11 @@ organizationSearch.setEmptyResultsMessage(emptyResultsMessage);
 		>
 			<liferay-ui:write bean="<%= organization %>" property="country" />
 		</liferay-ui:search-container-column-text>
+
+		<liferay-ui:search-container-column-jsp
+				align="right"
+				path="/html/portlet/users_admin/organization_action.jsp"
+		/>
 	</liferay-ui:search-container-row>
 
 	<liferay-util:buffer var="formButton">
