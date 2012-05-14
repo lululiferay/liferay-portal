@@ -27,6 +27,9 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.messaging.DestinationNames;
+import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.search.FacetedSearcher;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.Indexer;
@@ -134,6 +137,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		// Virtual host
 
 		updateVirtualHost(company.getCompanyId(), virtualHostname);
+
+		sendMessage(company.getWebId());
 
 		return company;
 	}
@@ -1241,6 +1246,12 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			}
 		}
 	}
+
+	private void sendMessage(String webId) {
+        Message message = new Message();
+        message.put("webId", webId);
+        MessageBusUtil.sendMessage(DestinationNames.PORTAL_INSTANCE, message);
+    }
 
 	private static final String _DEFAULT_VIRTUAL_HOST = "localhost";
 
